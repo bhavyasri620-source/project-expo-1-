@@ -1,0 +1,4128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#12372A"
+    >
+
+    <meta
+        name="description"
+        content="Veda Sahayak - AI-Assisted Triage Support for ASHA Workers"
+    >
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <title>Veda Sahayak</title>
+
+
+    <style>
+
+        /* =========================================
+           GLOBAL
+        ========================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                #eef5f0;
+
+            color:
+                #18352b;
+
+            line-height:
+                1.6;
+        }
+
+
+        button,
+        input,
+        select {
+
+            font-family:
+                inherit;
+        }
+
+
+        button {
+
+            cursor:
+                pointer;
+        }
+
+
+        /* =========================================
+           LOGIN SCREEN
+        ========================================= */
+
+        #loginScreen {
+
+            min-height:
+                100vh;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0c2e20,
+                    #174c35,
+                    #326b4d
+                );
+        }
+
+
+        .login-box {
+
+            width:
+                100%;
+
+            max-width:
+                430px;
+
+            background:
+                rgba(255,255,255,0.97);
+
+            padding:
+                40px;
+
+            border-radius:
+                25px;
+
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.3);
+
+            text-align:
+                center;
+        }
+
+
+        .login-logo {
+
+            font-size:
+                55px;
+
+            margin-bottom:
+                10px;
+        }
+
+
+        .login-box h1 {
+
+            font-size:
+                32px;
+
+            color:
+                #174c35;
+
+            margin-bottom:
+                5px;
+        }
+
+
+        .login-box h2 {
+
+            font-size:
+                17px;
+
+            font-weight:
+                normal;
+
+            color:
+                #65756d;
+
+            margin-bottom:
+                25px;
+        }
+
+
+        .login-input {
+
+            width:
+                100%;
+
+            padding:
+                14px;
+
+            margin:
+                8px 0;
+
+            border:
+                1px solid #ccd9d1;
+
+            border-radius:
+                12px;
+
+            font-size:
+                15px;
+
+            outline:
+                none;
+        }
+
+
+        .login-input:focus {
+
+            border-color:
+                #2e7d5a;
+        }
+
+
+        .primary-button {
+
+            width:
+                100%;
+
+            border:
+                none;
+
+            padding:
+                15px;
+
+            border-radius:
+                12px;
+
+            background:
+                #17633f;
+
+            color:
+                white;
+
+            font-size:
+                16px;
+
+            font-weight:
+                bold;
+
+            margin-top:
+                15px;
+
+            transition:
+                0.2s;
+        }
+
+
+        .primary-button:hover {
+
+            background:
+                #0e4c30;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .demo-note {
+
+            margin-top:
+                15px;
+
+            font-size:
+                12px;
+
+            color:
+                #75847d;
+        }
+
+
+        /* =========================================
+           APP
+        ========================================= */
+
+        #app {
+
+            display:
+                none;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #103b29,
+                    #1e6645
+                );
+
+            color:
+                white;
+
+            padding:
+                18px 5%;
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                20px;
+
+            position:
+                sticky;
+
+            top:
+                0;
+
+            z-index:
+                100;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.15);
+        }
+
+
+        .brand {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+        }
+
+
+        .brand-icon {
+
+            font-size:
+                32px;
+        }
+
+
+        .brand h1 {
+
+            font-size:
+                24px;
+        }
+
+
+        .brand p {
+
+            font-size:
+                12px;
+
+            opacity:
+                0.85;
+        }
+
+
+        .header-right {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+        }
+
+
+        .worker-name {
+
+            font-size:
+                14px;
+        }
+
+
+        .logout-button {
+
+            background:
+                rgba(255,255,255,0.15);
+
+            border:
+                1px solid rgba(255,255,255,0.3);
+
+            color:
+                white;
+
+            padding:
+                9px 14px;
+
+            border-radius:
+                9px;
+        }
+
+
+        .logout-button:hover {
+
+            background:
+                rgba(255,255,255,0.25);
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        main {
+
+            max-width:
+                1250px;
+
+            margin:
+                auto;
+
+            padding:
+                25px;
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        .hero {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            border-radius:
+                25px;
+
+            margin-bottom:
+                25px;
+
+            min-height:
+                430px;
+
+            background:
+                #12372a;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.15);
+        }
+
+
+        .hero img {
+
+            width:
+                100%;
+
+            height:
+                430px;
+
+            object-fit:
+                cover;
+
+            display:
+                block;
+        }
+
+
+        .hero-overlay {
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            padding:
+                45px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(4,30,20,0.82),
+                    rgba(4,30,20,0.45),
+                    rgba(4,30,20,0.05)
+                );
+        }
+
+
+        .hero-content {
+
+            max-width:
+                570px;
+
+            color:
+                white;
+        }
+
+
+        .hero-badge {
+
+            display:
+                inline-block;
+
+            background:
+                rgba(255,255,255,0.15);
+
+            border:
+                1px solid rgba(255,255,255,0.35);
+
+            padding:
+                7px 14px;
+
+            border-radius:
+                50px;
+
+            font-size:
+                12px;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .hero-content h2 {
+
+            font-size:
+                42px;
+
+            line-height:
+                1.15;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .hero-content h2 span {
+
+            color:
+                #b9efc8;
+        }
+
+
+        .hero-content p {
+
+            font-size:
+                16px;
+
+            opacity:
+                0.93;
+        }
+
+
+        /* =========================================
+           WELCOME
+        ========================================= */
+
+        .welcome {
+
+            background:
+                white;
+
+            border-radius:
+                18px;
+
+            padding:
+                22px;
+
+            margin-bottom:
+                25px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.06);
+        }
+
+
+        .welcome h2 {
+
+            color:
+                #174c35;
+
+            margin-bottom:
+                4px;
+        }
+
+
+        .welcome p {
+
+            color:
+                #66766f;
+        }
+
+
+        /* =========================================
+           SECTION CARD
+        ========================================= */
+
+        .card {
+
+            background:
+                white;
+
+            border-radius:
+                18px;
+
+            padding:
+                25px;
+
+            margin-bottom:
+                25px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.06);
+        }
+
+
+        .card-title {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                20px;
+
+            color:
+                #174c35;
+        }
+
+
+        .card-title h2 {
+
+            font-size:
+                21px;
+        }
+
+
+        /* =========================================
+           FORM
+        ========================================= */
+
+        .form-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap:
+                18px;
+        }
+
+
+        .form-group {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+        }
+
+
+        .form-group.full {
+
+            grid-column:
+                1 / -1;
+        }
+
+
+        .form-group label {
+
+            font-size:
+                13px;
+
+            font-weight:
+                bold;
+
+            margin-bottom:
+                7px;
+
+            color:
+                #42584e;
+        }
+
+
+        .form-group input,
+        .form-group select {
+
+            width:
+                100%;
+
+            padding:
+                12px 14px;
+
+            border:
+                1px solid #d0ddd6;
+
+            border-radius:
+                10px;
+
+            outline:
+                none;
+
+            background:
+                #fbfdfc;
+
+            font-size:
+                14px;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus {
+
+            border-color:
+                #2e7d5a;
+
+            box-shadow:
+                0 0 0 3px rgba(46,125,90,0.08);
+        }
+
+
+        .hint {
+
+            font-size:
+                11px;
+
+            color:
+                #7b8982;
+
+            margin-top:
+                4px;
+        }
+
+
+        /* =========================================
+           SYMPTOMS
+        ========================================= */
+
+        .symptom-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap:
+                12px;
+        }
+
+
+        .symptom-item {
+
+            position:
+                relative;
+        }
+
+
+        .symptom-item input {
+
+            position:
+                absolute;
+
+            opacity:
+                0;
+        }
+
+
+        .symptom-item label {
+
+            display:
+                block;
+
+            padding:
+                15px 10px;
+
+            text-align:
+                center;
+
+            border:
+                1px solid #d6e1da;
+
+            border-radius:
+                12px;
+
+            background:
+                #f9fcfa;
+
+            cursor:
+                pointer;
+
+            font-size:
+                13px;
+
+            transition:
+                0.2s;
+        }
+
+
+        .symptom-item input:checked + label {
+
+            background:
+                #dff3e7;
+
+            border-color:
+                #2e7d5a;
+
+            color:
+                #125035;
+
+            font-weight:
+                bold;
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* =========================================
+           SEVERITY
+        ========================================= */
+
+        .severity-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                12px;
+        }
+
+
+        .severity-item input {
+
+            display:
+                none;
+        }
+
+
+        .severity-item label {
+
+            display:
+                block;
+
+            text-align:
+                center;
+
+            padding:
+                13px;
+
+            border:
+                1px solid #d6e1da;
+
+            border-radius:
+                10px;
+
+            cursor:
+                pointer;
+
+            background:
+                #fafcfa;
+        }
+
+
+        .severity-item input:checked + label {
+
+            background:
+                #e4f3e8;
+
+            border-color:
+                #28754e;
+
+            font-weight:
+                bold;
+        }
+
+
+        /* =========================================
+           ACTION BUTTONS
+        ========================================= */
+
+        .action-row {
+
+            display:
+                flex;
+
+            gap:
+                12px;
+
+            margin-top:
+                22px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .action-button {
+
+            border:
+                none;
+
+            padding:
+                13px 20px;
+
+            border-radius:
+                10px;
+
+            font-size:
+                14px;
+
+            font-weight:
+                bold;
+        }
+
+
+        .check-button {
+
+            background:
+                #17633f;
+
+            color:
+                white;
+
+            flex:
+                1;
+        }
+
+
+        .check-button:hover {
+
+            background:
+                #0d4d30;
+        }
+
+
+        .demo-button {
+
+            background:
+                #e9f1ec;
+
+            color:
+                #20553c;
+        }
+
+
+        .clear-button {
+
+            background:
+                #f3eeee;
+
+            color:
+                #8b4444;
+        }
+
+
+        /* =========================================
+           RESULT
+        ========================================= */
+
+        #resultSection {
+
+            display:
+                none;
+        }
+
+
+        .result-box {
+
+            border-radius:
+                18px;
+
+            padding:
+                25px;
+        }
+
+
+        .result-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                20px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .triage-badge {
+
+            font-size:
+                28px;
+
+            font-weight:
+                900;
+
+            padding:
+                12px 22px;
+
+            border-radius:
+                14px;
+        }
+
+
+        .red-result {
+
+            background:
+                #ffe2e2;
+
+            color:
+                #a71919;
+
+            border:
+                1px solid #f2aaaa;
+        }
+
+
+        .yellow-result {
+
+            background:
+                #fff1c9;
+
+            color:
+                #866100;
+
+            border:
+                1px solid #efd47b;
+        }
+
+
+        .green-result {
+
+            background:
+                #dff3e5;
+
+            color:
+                #17613d;
+
+            border:
+                1px solid #a9d9b9;
+        }
+
+
+        .result-details {
+
+            margin-top:
+                22px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                15px;
+        }
+
+
+        .result-stat {
+
+            background:
+                rgba(255,255,255,0.7);
+
+            border:
+                1px solid rgba(0,0,0,0.07);
+
+            border-radius:
+                12px;
+
+            padding:
+                15px;
+        }
+
+
+        .result-stat small {
+
+            display:
+                block;
+
+            color:
+                #68756f;
+
+            margin-bottom:
+                3px;
+        }
+
+
+        .result-stat strong {
+
+            font-size:
+                20px;
+        }
+
+
+        .reasoning {
+
+            margin-top:
+                20px;
+
+            padding:
+                18px;
+
+            border-radius:
+                12px;
+
+            background:
+                rgba(255,255,255,0.7);
+        }
+
+
+        .reasoning h3 {
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .warning {
+
+            margin-top:
+                15px;
+
+            padding:
+                14px;
+
+            border-radius:
+                10px;
+
+            background:
+                #fff5d9;
+
+            border:
+                1px solid #ecd78d;
+
+            color:
+                #745900;
+
+            font-size:
+                13px;
+
+            display:
+                none;
+        }
+
+
+        /* =========================================
+           REFERRAL
+        ========================================= */
+
+        .referral-box {
+
+            background:
+                #f5f9f6;
+
+            border:
+                1px solid #d9e5dd;
+
+            padding:
+                18px;
+
+            border-radius:
+                12px;
+
+            white-space:
+                pre-wrap;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.7;
+
+            margin-top:
+                15px;
+        }
+
+
+        .referral-actions {
+
+            display:
+                flex;
+
+            gap:
+                10px;
+
+            margin-top:
+                12px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .secondary-button {
+
+            padding:
+                10px 15px;
+
+            border:
+                none;
+
+            border-radius:
+                9px;
+
+            background:
+                #dcebe2;
+
+            color:
+                #1d5a3d;
+
+            font-weight:
+                bold;
+        }
+
+
+        /* =========================================
+           DASHBOARD
+        ========================================= */
+
+        .stats-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap:
+                15px;
+        }
+
+
+        .stat-card {
+
+            background:
+                white;
+
+            border-radius:
+                15px;
+
+            padding:
+                20px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.05);
+        }
+
+
+        .stat-card small {
+
+            color:
+                #748079;
+
+            display:
+                block;
+        }
+
+
+        .stat-card strong {
+
+            font-size:
+                30px;
+
+            display:
+                block;
+
+            margin-top:
+                5px;
+        }
+
+
+        .stat-total strong {
+
+            color:
+                #174c35;
+        }
+
+
+        .stat-red strong {
+
+            color:
+                #b32020;
+        }
+
+
+        .stat-yellow strong {
+
+            color:
+                #a77a00;
+        }
+
+
+        .stat-green strong {
+
+            color:
+                #217044;
+        }
+
+
+        /* =========================================
+           HISTORY
+        ========================================= */
+
+        .history-controls {
+
+            display:
+                flex;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                18px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        .history-controls input,
+        .history-controls select {
+
+            padding:
+                11px;
+
+            border:
+                1px solid #d2ddd6;
+
+            border-radius:
+                9px;
+
+            outline:
+                none;
+
+            background:
+                white;
+        }
+
+
+        .history-controls input {
+
+            flex:
+                1;
+
+            min-width:
+                220px;
+        }
+
+
+        .table-wrapper {
+
+            overflow-x:
+                auto;
+        }
+
+
+        table {
+
+            width:
+                100%;
+
+            border-collapse:
+                collapse;
+
+            min-width:
+                750px;
+        }
+
+
+        th,
+        td {
+
+            padding:
+                12px;
+
+            text-align:
+                left;
+
+            border-bottom:
+                1px solid #e6ece8;
+
+            font-size:
+                13px;
+        }
+
+
+        th {
+
+            background:
+                #f1f6f3;
+
+            color:
+                #315545;
+        }
+
+
+        .table-badge {
+
+            display:
+                inline-block;
+
+            padding:
+                4px 9px;
+
+            border-radius:
+                50px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                bold;
+        }
+
+
+        .badge-red {
+
+            background:
+                #ffe0e0;
+
+            color:
+                #a71919;
+        }
+
+
+        .badge-yellow {
+
+            background:
+                #fff0c7;
+
+            color:
+                #856100;
+        }
+
+
+        .badge-green {
+
+            background:
+                #dcf2e3;
+
+            color:
+                #17613d;
+        }
+
+
+        .empty-history {
+
+            text-align:
+                center;
+
+            padding:
+                25px;
+
+            color:
+                #78857f;
+        }
+
+
+        /* =========================================
+           SAFETY NOTICE
+        ========================================= */
+
+        .safety {
+
+            background:
+                #fff8e4;
+
+            border:
+                1px solid #e8d48c;
+
+            color:
+                #665100;
+
+            padding:
+                18px;
+
+            border-radius:
+                14px;
+
+            margin-top:
+                25px;
+
+            font-size:
+                13px;
+        }
+
+
+        .safety strong {
+
+            display:
+                block;
+
+            margin-bottom:
+                5px;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+
+            text-align:
+                center;
+
+            padding:
+                30px 20px;
+
+            color:
+                #75827c;
+
+            font-size:
+                12px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .symptom-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .hero-content h2 {
+
+                font-size:
+                    34px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            header {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .header-right {
+
+                width:
+                    100%;
+
+                justify-content:
+                    space-between;
+            }
+
+
+            main {
+
+                padding:
+                    15px;
+            }
+
+
+            .hero {
+
+                min-height:
+                    500px;
+            }
+
+
+            .hero img {
+
+                height:
+                    500px;
+            }
+
+
+            .hero-overlay {
+
+                padding:
+                    25px;
+
+                align-items:
+                    flex-end;
+
+                background:
+                    linear-gradient(
+                        0deg,
+                        rgba(4,30,20,0.9),
+                        rgba(4,30,20,0.3)
+                    );
+            }
+
+
+            .hero-content h2 {
+
+                font-size:
+                    30px;
+            }
+
+
+            .form-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .form-group.full {
+
+                grid-column:
+                    auto;
+            }
+
+
+            .severity-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .result-details {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .card {
+
+                padding:
+                    18px;
+            }
+
+        }
+
+
+        @media (max-width: 430px) {
+
+            .symptom-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .hero-content h2 {
+
+                font-size:
+                    27px;
+            }
+
+        }
+
+
+        /* =========================================
+           PRINT
+        ========================================= */
+
+        @media print {
+
+            body {
+
+                background:
+                    white;
+            }
+
+
+            header,
+            .hero,
+            #patientFormSection,
+            #dashboardSection,
+            #historySection,
+            .safety,
+            footer,
+            .referral-actions {
+
+                display:
+                    none !important;
+            }
+
+
+            #resultSection {
+
+                display:
+                    block !important;
+            }
+
+
+            .card {
+
+                box-shadow:
+                    none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         LOGIN
+    ========================================= -->
+
+    <section id="loginScreen">
+
+        <div class="login-box">
+
+            <div class="login-logo">
+                🌿
+            </div>
+
+            <h1>
+                Veda Sahayak
+            </h1>
+
+            <h2>
+                AI-Assisted Triage Support
+            </h2>
+
+            <input
+                id="workerName"
+                class="login-input"
+                type="text"
+                placeholder="ASHA Worker Name"
+            >
+
+            <input
+                id="workerId"
+                class="login-input"
+                type="text"
+                placeholder="Worker ID"
+            >
+
+            <button
+                class="primary-button"
+                onclick="loginWorker()"
+            >
+                Enter Veda Sahayak
+            </button>
+
+            <p class="demo-note">
+                Prototype login for hackathon demonstration
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         APPLICATION
+    ========================================= -->
+
+    <div id="app">
+
+
+        <!-- HEADER -->
+
+        <header>
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    🌿
+                </div>
+
+                <div>
+
+                    <h1>
+                        Veda Sahayak
+                    </h1>
+
+                    <p>
+                        Ancient Wisdom Meets Modern Care
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <div class="worker-name">
+                    👩‍⚕️ <span id="welcomeWorker"></span>
+                </div>
+
+                <button
+                    class="logout-button"
+                    onclick="logoutWorker()"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main>
+
+
+            <!-- =====================================
+                 HERO IMAGE
+            ====================================== -->
+
+            <section class="hero">
+
+                <img
+                    src="veda-hero.png"
+                    alt="Veda Sahayak - Ancient Wisdom Meets Modern Care"
+                >
+
+                <div class="hero-overlay">
+
+                    <div class="hero-content">
+
+                        <div class="hero-badge">
+                            🌿 AI-Assisted Healthcare Support
+                        </div>
+
+                        <h2>
+                            Empowering ASHA Workers with
+                            <span>Smart Health Support</span>
+                        </h2>
+
+                        <p>
+                            Veda Sahayak helps frontline health workers
+                            organize patient information, identify
+                            potential warning signs and prepare referral
+                            information for further clinical assessment.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 WELCOME
+            ====================================== -->
+
+            <section class="welcome">
+
+                <h2>
+                    Welcome, <span id="workerDisplay"></span> 👋
+                </h2>
+
+                <p>
+                    Record patient information and use the prototype
+                    decision-support workflow for demonstration.
+                </p>
+
+            </section>
+
+
+            <!-- =====================================
+                 PATIENT FORM
+            ====================================== -->
+
+            <section
+                class="card"
+                id="patientFormSection"
+            >
+
+                <div class="card-title">
+
+                    <span>👤</span>
+
+                    <h2>
+                        Patient Details
+                    </h2>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Patient Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="patientName"
+                            placeholder="Enter patient name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Age *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            min="0"
+                            max="120"
+                            placeholder="Age"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Gender *
+                        </label>
+
+                        <select id="gender">
+
+                            <option value="">
+                                Select gender
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Temperature (°C) *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="temperature"
+                            step="0.1"
+                            placeholder="Example: 37.2"
+                        >
+
+                        <span class="hint">
+                            Demo input range: 30–45°C
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Heart Rate (BPM) *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="heartRate"
+                            placeholder="Example: 80"
+                        >
+
+                        <span class="hint">
+                            Demo input range: 30–220 BPM
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 SYMPTOMS
+            ====================================== -->
+
+            <section class="card">
+
+                <div class="card-title">
+
+                    <span>🩺</span>
+
+                    <h2>
+                        Symptoms
+                    </h2>
+
+                </div>
+
+
+                <div class="symptom-grid">
+
+
+                    <div class="symptom-item">
+
+                        <input
+                            type="checkbox"
+                            id="fever"
+                            value="fever"
+                        >
+
+                        <label for="fever">
+                            🌡️ Fever
+                        </label>
+
+                    </div>
+
+
+                    <div class="symptom-item">
+
+                        <input
+                            type="checkbox"
+                            id="cough"
+                            value="cough"
+                        >
+
+                        <label for="cough">
+                            😷 Cough
+                        </label>
+
+                    </div>
+
+
+                    <div class="symptom-item">
+
+                        <input
+                            type="checkbox"
+                            id="breathing"
+                            value="breathing"
+                        >
+
+                        <label for="breathing">
+                            🫁 Breathing Difficulty
+                        </label>
+
+                    </div>
+
+
+                    <div class="symptom-item">
+
+                        <input
+                            type="checkbox"
+                            id="chestPain"
+                            value="chestPain"
+                        >
+
+                        <label for="chestPain">
+                            ❤️ Chest Pain
+                        </label>
+
+                    </div>
+
+
+                    <div class="symptom-item">
+
+                        <input
+                            type="checkbox"
+                            id="vomiting"
+                            value="vomiting"
+                        >
+
+                        <label for="vomiting">
+                            🤢 Vomiting
+                        </label>
+
+                    </div>
+
+
+                    <div class="symptom-item">
+
+                        <input
+                            type="checkbox"
+                            id="weakness"
+                            value="weakness"
+                        >
+
+                        <label for="weakness">
+                            😓 Weakness
+                        </label>
+
+                    </div>
+
+
+                    <div class="symptom-item">
+
+                        <input
+                            type="checkbox"
+                            id="unconscious"
+                            value="unconscious"
+                        >
+
+                        <label for="unconscious">
+                            ⚠️ Unconscious
+                        </label>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 SEVERITY
+            ====================================== -->
+
+            <section class="card">
+
+                <div class="card-title">
+
+                    <span>📋</span>
+
+                    <h2>
+                        Overall Symptom Severity
+                    </h2>
+
+                </div>
+
+
+                <div class="severity-grid">
+
+
+                    <div class="severity-item">
+
+                        <input
+                            type="radio"
+                            name="severity"
+                            id="mild"
+                            value="Mild"
+                            checked
+                        >
+
+                        <label for="mild">
+                            🟢 Mild
+                        </label>
+
+                    </div>
+
+
+                    <div class="severity-item">
+
+                        <input
+                            type="radio"
+                            name="severity"
+                            id="moderate"
+                            value="Moderate"
+                        >
+
+                        <label for="moderate">
+                            🟡 Moderate
+                        </label>
+
+                    </div>
+
+
+                    <div class="severity-item">
+
+                        <input
+                            type="radio"
+                            name="severity"
+                            id="severe"
+                            value="Severe"
+                        >
+
+                        <label for="severe">
+                            🔴 Severe
+                        </label>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="action-row">
+
+                    <button
+                        class="action-button demo-button"
+                        onclick="loadDemoPatient()"
+                    >
+                        ⚡ Load Demo Patient
+                    </button>
+
+                    <button
+                        class="action-button clear-button"
+                        onclick="clearForm()"
+                    >
+                        Clear
+                    </button>
+
+                    <button
+                        class="action-button check-button"
+                        onclick="checkPatient()"
+                    >
+                        🔍 Check Patient
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 RESULT
+            ====================================== -->
+
+            <section
+                class="card"
+                id="resultSection"
+            >
+
+                <div class="card-title">
+
+                    <span>🤖</span>
+
+                    <h2>
+                        Triage Assessment
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="resultBox"
+                    class="result-box"
+                >
+
+                    <div class="result-header">
+
+                        <div>
+
+                            <h3>
+                                Assessment Result
+                            </h3>
+
+                            <p id="resultPatient"></p>
+
+                        </div>
+
+
+                        <div
+                            id="triageBadge"
+                            class="triage-badge"
+                        >
+                            GREEN
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-details">
+
+
+                        <div class="result-stat">
+
+                            <small>
+                                Demo Risk Score
+                            </small>
+
+                            <strong id="riskScore">
+                                0
+                            </strong>
+
+                            <span>
+                                / 100
+                            </span>
+
+                        </div>
+
+
+                        <div class="result-stat">
+
+                            <small>
+                                Demo Confidence
+                            </small>
+
+                            <strong id="confidenceScore">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="result-stat">
+
+                            <small>
+                                Confidence Level
+                            </small>
+
+                            <strong id="confidenceLabel">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="reasoning">
+
+                        <h3>
+                            🧠 Reasoning
+                        </h3>
+
+                        <p id="reasoningText"></p>
+
+                    </div>
+
+
+                    <div class="reasoning">
+
+                        <h3>
+                            📌 Recommended Action
+                        </h3>
+
+                        <p id="actionText"></p>
+
+                    </div>
+
+
+                    <div
+                        id="lowConfidenceWarning"
+                        class="warning"
+                    >
+
+                        ⚠️
+                        <strong>
+                            Low-confidence result:
+                        </strong>
+                        Consider consultation with an appropriate
+                        healthcare professional/PHC rather than relying
+                        on this prototype result alone.
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- REFERRAL -->
+
+                <div style="margin-top:25px;">
+
+                    <h3>
+                        📄 Referral Note
+                    </h3>
+
+                    <div
+                        id="referralText"
+                        class="referral-box"
+                    ></div>
+
+
+                    <div class="referral-actions">
+
+                        <button
+                            class="secondary-button"
+                            onclick="copyReferral()"
+                        >
+                            📋 Copy Referral
+                        </button>
+
+                        <button
+                            class="secondary-button"
+                            onclick="window.print()"
+                        >
+                            🖨️ Print / Generate PDF
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 DASHBOARD
+            ====================================== -->
+
+            <section
+                class="card"
+                id="dashboardSection"
+            >
+
+                <div class="card-title">
+
+                    <span>📊</span>
+
+                    <h2>
+                        Dashboard
+                    </h2>
+
+                </div>
+
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card stat-total">
+
+                        <small>
+                            Total Patients
+                        </small>
+
+                        <strong id="totalPatients">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card stat-red">
+
+                        <small>
+                            RED Cases
+                        </small>
+
+                        <strong id="redPatients">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card stat-yellow">
+
+                        <small>
+                            YELLOW Cases
+                        </small>
+
+                        <strong id="yellowPatients">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card stat-green">
+
+                        <small>
+                            GREEN Cases
+                        </small>
+
+                        <strong id="greenPatients">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 HISTORY
+            ====================================== -->
+
+            <section
+                class="card"
+                id="historySection"
+            >
+
+                <div class="card-title">
+
+                    <span>🗂️</span>
+
+                    <h2>
+                        Patient History
+                    </h2>
+
+                </div>
+
+
+                <div class="history-controls">
+
+                    <input
+                        type="text"
+                        id="historySearch"
+                        placeholder="Search patient name..."
+                        oninput="displayHistory()"
+                    >
+
+
+                    <select
+                        id="historyFilter"
+                        onchange="displayHistory()"
+                    >
+
+                        <option value="ALL">
+                            All Triage Levels
+                        </option>
+
+                        <option value="RED">
+                            RED
+                        </option>
+
+                        <option value="YELLOW">
+                            YELLOW
+                        </option>
+
+                        <option value="GREEN">
+                            GREEN
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        class="action-button clear-button"
+                        onclick="clearHistory()"
+                    >
+                        Clear History
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Patient
+                                </th>
+
+                                <th>
+                                    Age
+                                </th>
+
+                                <th>
+                                    Gender
+                                </th>
+
+                                <th>
+                                    Triage
+                                </th>
+
+                                <th>
+                                    Risk
+                                </th>
+
+                                <th>
+                                    Confidence
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="historyBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 SAFETY
+            ====================================== -->
+
+            <div class="safety">
+
+                <strong>
+                    ⚠️ Prototype Safety Notice
+                </strong>
+
+                Veda Sahayak is a hackathon/learning prototype and
+                is not a medically validated diagnostic or triage
+                system. Risk scores and confidence values shown here
+                are demonstration heuristics, not clinical probabilities.
+                Real-world deployment would require validated clinical
+                criteria, healthcare-professional review, privacy and
+                security controls, testing, and regulatory/clinical
+                validation.
+
+            </div>
+
+
+        </main>
+
+
+        <footer>
+
+            🌿 Veda Sahayak
+
+            <br>
+
+            AI-Assisted Triage Support for ASHA Workers
+
+            <br>
+
+            Hackathon Prototype • Not for clinical decision-making
+
+        </footer>
+
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+
+    <script>
+
+
+        /* =========================================
+           LOGIN
+        ========================================= */
+
+        function loginWorker() {
+
+            const workerName =
+                document
+                .getElementById("workerName")
+                .value
+                .trim();
+
+            const workerId =
+                document
+                .getElementById("workerId")
+                .value
+                .trim();
+
+
+            if (!workerName) {
+
+                alert(
+                    "Please enter the ASHA Worker name."
+                );
+
+                return;
+            }
+
+
+            if (!workerId) {
+
+                alert(
+                    "Please enter the Worker ID."
+                );
+
+                return;
+            }
+
+
+            localStorage.setItem(
+                "vedaWorkerName",
+                workerName
+            );
+
+            localStorage.setItem(
+                "vedaWorkerId",
+                workerId
+            );
+
+
+            showApp();
+
+        }
+
+
+        function showApp() {
+
+            const savedName =
+                localStorage.getItem(
+                    "vedaWorkerName"
+                );
+
+
+            if (!savedName) {
+
+                return;
+            }
+
+
+            document
+                .getElementById("loginScreen")
+                .style.display = "none";
+
+
+            document
+                .getElementById("app")
+                .style.display = "block";
+
+
+            document
+                .getElementById("welcomeWorker")
+                .textContent = savedName;
+
+
+            document
+                .getElementById("workerDisplay")
+                .textContent = savedName;
+
+
+            updateDashboard();
+
+            displayHistory();
+
+        }
+
+
+        function logoutWorker() {
+
+            localStorage.removeItem(
+                "vedaWorkerName"
+            );
+
+            localStorage.removeItem(
+                "vedaWorkerId"
+            );
+
+
+            document
+                .getElementById("app")
+                .style.display = "none";
+
+
+            document
+                .getElementById("loginScreen")
+                .style.display = "flex";
+
+
+            document
+                .getElementById("workerName")
+                .value = "";
+
+            document
+                .getElementById("workerId")
+                .value = "";
+
+        }
+
+
+        /* =========================================
+           VALIDATION
+        ========================================= */
+
+        function validatePatient() {
+
+            const name =
+                document
+                .getElementById("patientName")
+                .value
+                .trim();
+
+
+            const age =
+                Number(
+                    document
+                    .getElementById("age")
+                    .value
+                );
+
+
+            const gender =
+                document
+                .getElementById("gender")
+                .value;
+
+
+            const temperature =
+                Number(
+                    document
+                    .getElementById("temperature")
+                    .value
+                );
+
+
+            const heartRate =
+                Number(
+                    document
+                    .getElementById("heartRate")
+                    .value
+                );
+
+
+            if (!name) {
+
+                alert(
+                    "Please enter the patient name."
+                );
+
+                return false;
+            }
+
+
+            if (
+                !Number.isFinite(age) ||
+                age < 0 ||
+                age > 120
+            ) {
+
+                alert(
+                    "Please enter a valid age between 0 and 120."
+                );
+
+                return false;
+            }
+
+
+            if (!gender) {
+
+                alert(
+                    "Please select the patient's gender."
+                );
+
+                return false;
+            }
+
+
+            if (
+                !Number.isFinite(temperature) ||
+                temperature < 30 ||
+                temperature > 45
+            ) {
+
+                alert(
+                    "Please enter a temperature between 30°C and 45°C."
+                );
+
+                return false;
+            }
+
+
+            if (
+                !Number.isFinite(heartRate) ||
+                heartRate < 30 ||
+                heartRate > 220
+            ) {
+
+                alert(
+                    "Please enter a heart rate between 30 and 220 BPM."
+                );
+
+                return false;
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =========================================
+           CHECK PATIENT
+        ========================================= */
+
+        function checkPatient() {
+
+            if (!validatePatient()) {
+
+                return;
+            }
+
+
+            const patientName =
+                document
+                .getElementById("patientName")
+                .value
+                .trim();
+
+
+            const age =
+                Number(
+                    document
+                    .getElementById("age")
+                    .value
+                );
+
+
+            const gender =
+                document
+                .getElementById("gender")
+                .value;
+
+
+            const temperature =
+                Number(
+                    document
+                    .getElementById("temperature")
+                    .value
+                );
+
+
+            const heartRate =
+                Number(
+                    document
+                    .getElementById("heartRate")
+                    .value
+                );
+
+
+            const selectedSymptoms =
+                Array.from(
+                    document.querySelectorAll(
+                        '.symptom-item input:checked'
+                    )
+                ).map(
+                    checkbox =>
+                        checkbox.value
+                );
+
+
+            const severityElement =
+                document.querySelector(
+                    'input[name="severity"]:checked'
+                );
+
+
+            const severity =
+                severityElement
+                ? severityElement.value
+                : "Mild";
+
+
+            /* =====================================
+               DEMO RISK SCORING
+            ===================================== */
+
+            let riskScore = 0;
+
+
+            if (
+                selectedSymptoms.includes(
+                    "breathing"
+                )
+            ) {
+
+                riskScore += 50;
+
+            }
+
+
+            if (
+                selectedSymptoms.includes(
+                    "chestPain"
+                )
+            ) {
+
+                riskScore += 40;
+
+            }
+
+
+            if (
+                selectedSymptoms.includes(
+                    "unconscious"
+                )
+            ) {
+
+                riskScore += 50;
+
+            }
+
+
+            if (
+                selectedSymptoms.includes(
+                    "vomiting"
+                )
+            ) {
+
+                riskScore += 15;
+
+            }
+
+
+            if (
+                selectedSymptoms.includes(
+                    "weakness"
+                )
+            ) {
+
+                riskScore += 10;
+
+            }
+
+
+            if (
+                selectedSymptoms.includes(
+                    "fever"
+                )
+            ) {
+
+                riskScore += 10;
+
+            }
+
+
+            if (
+                selectedSymptoms.includes(
+                    "cough"
+                )
+            ) {
+
+                riskScore += 5;
+
+            }
+
+
+            if (
+                temperature >= 38.0
+            ) {
+
+                riskScore += 20;
+
+            }
+
+
+            if (
+                heartRate >= 120
+            ) {
+
+                riskScore += 20;
+
+            }
+
+
+            if (
+                severity === "Moderate"
+            ) {
+
+                riskScore += 5;
+
+            }
+
+
+            if (
+                severity === "Severe"
+            ) {
+
+                riskScore += 10;
+
+            }
+
+
+            if (riskScore > 100) {
+
+                riskScore = 100;
+
+            }
+
+
+            /* =====================================
+               TRIAGE
+            ===================================== */
+
+            let triageLevel;
+
+
+            if (
+
+                selectedSymptoms.includes(
+                    "breathing"
+                )
+
+                ||
+
+                selectedSymptoms.includes(
+                    "chestPain"
+                )
+
+                ||
+
+                selectedSymptoms.includes(
+                    "unconscious"
+                )
+
+            ) {
+
+                triageLevel = "RED";
+
+            }
+
+            else if (
+
+                riskScore >= 20
+
+                ||
+
+                temperature >= 38.0
+
+                ||
+
+                selectedSymptoms.includes(
+                    "vomiting"
+                )
+
+            ) {
+
+                triageLevel = "YELLOW";
+
+            }
+
+            else {
+
+                triageLevel = "GREEN";
+
+            }
+
+
+            /* =====================================
+               CONFIDENCE
+            ===================================== */
+
+            let confidenceScore;
+
+
+            if (
+
+                selectedSymptoms.includes(
+                    "breathing"
+                )
+
+                ||
+
+                selectedSymptoms.includes(
+                    "chestPain"
+                )
+
+                ||
+
+                selectedSymptoms.includes(
+                    "unconscious"
+                )
+
+            ) {
+
+                confidenceScore = 92;
+
+            }
+
+            else if (
+                selectedSymptoms.length >= 1
+            ) {
+
+                confidenceScore = 80;
+
+            }
+
+            else {
+
+                confidenceScore = 65;
+
+            }
+
+
+            let confidenceLabel;
+
+
+            if (confidenceScore >= 85) {
+
+                confidenceLabel = "High";
+
+            }
+
+            else if (confidenceScore >= 70) {
+
+                confidenceLabel = "Moderate";
+
+            }
+
+            else {
+
+                confidenceLabel = "Low";
+
+            }
+
+
+            /* =====================================
+               REASONING
+            ===================================== */
+
+            let reasoning;
+
+
+            if (triageLevel === "RED") {
+
+                reasoning =
+                    "High-priority warning signs were detected in the information entered. Urgent clinical assessment should be considered.";
+
+            }
+
+            else if (triageLevel === "YELLOW") {
+
+                reasoning =
+                    "Some risk indicators were detected. Further assessment or PHC consultation may be appropriate.";
+
+            }
+
+            else {
+
+                reasoning =
+                    "No high-priority warning signs were detected from the information entered.";
+
+            }
+
+
+            /* =====================================
+               ACTION
+            ===================================== */
+
+            let action;
+
+
+            if (triageLevel === "RED") {
+
+                action =
+                    "Consider urgent assessment and referral to an appropriate healthcare facility.";
+
+            }
+
+            else if (triageLevel === "YELLOW") {
+
+                action =
+                    "Consider further assessment and consultation with the PHC/appropriate healthcare professional.";
+
+            }
+
+            else {
+
+                action =
+                    "Continue routine monitoring and follow appropriate health-worker guidance.";
+
+            }
+
+
+            /* =====================================
+               DISPLAY RESULT
+            ===================================== */
+
+            const resultSection =
+                document.getElementById(
+                    "resultSection"
+                );
+
+
+            const resultBox =
+                document.getElementById(
+                    "resultBox"
+                );
+
+
+            const triageBadge =
+                document.getElementById(
+                    "triageBadge"
+                );
+
+
+            resultSection.style.display =
+                "block";
+
+
+            resultBox.className =
+                "result-box";
+
+
+            if (triageLevel === "RED") {
+
+                resultBox.classList.add(
+                    "red-result"
+                );
+
+            }
+
+            else if (triageLevel === "YELLOW") {
+
+                resultBox.classList.add(
+                    "yellow-result"
+                );
+
+            }
+
+            else {
+
+                resultBox.classList.add(
+                    "green-result"
+                );
+
+            }
+
+
+            triageBadge.textContent =
+                triageLevel;
+
+
+            triageBadge.className =
+                "triage-badge";
+
+
+            if (triageLevel === "RED") {
+
+                triageBadge.classList.add(
+                    "red-result"
+                );
+
+            }
+
+            else if (triageLevel === "YELLOW") {
+
+                triageBadge.classList.add(
+                    "yellow-result"
+                );
+
+            }
+
+            else {
+
+                triageBadge.classList.add(
+                    "green-result"
+                );
+
+            }
+
+
+            document
+                .getElementById("resultPatient")
+                .textContent =
+                patientName +
+                " • " +
+                age +
+                " years • " +
+                gender;
+
+
+            document
+                .getElementById("riskScore")
+                .textContent =
+                riskScore;
+
+
+            document
+                .getElementById("confidenceScore")
+                .textContent =
+                confidenceScore + "%";
+
+
+            document
+                .getElementById("confidenceLabel")
+                .textContent =
+                confidenceLabel;
+
+
+            document
+                .getElementById("reasoningText")
+                .textContent =
+                reasoning;
+
+
+            document
+                .getElementById("actionText")
+                .textContent =
+                action;
+
+
+            const warning =
+                document.getElementById(
+                    "lowConfidenceWarning"
+                );
+
+
+            if (confidenceScore < 70) {
+
+                warning.style.display =
+                    "block";
+
+            }
+
+            else {
+
+                warning.style.display =
+                    "none";
+
+            }
+
+
+            /* =====================================
+               REFERRAL NOTE
+            ===================================== */
+
+            const currentDate =
+                new Date()
+                .toLocaleString();
+
+
+            const symptomsText =
+                selectedSymptoms.length > 0
+                ? selectedSymptoms.join(", ")
+                : "No symptoms selected";
+
+
+            const referral =
+
+`VEDA SAHAYAK - REFERRAL NOTE
+
+Patient Name: ${patientName}
+Age: ${age}
+Gender: ${gender}
+
+Temperature: ${temperature} °C
+Heart Rate: ${heartRate} BPM
+
+Symptoms:
+${symptomsText}
+
+Reported Severity:
+${severity}
+
+Prototype Triage Level:
+${triageLevel}
+
+Demo Risk Score:
+${riskScore}/100
+
+Demo Confidence:
+${confidenceScore}% (${confidenceLabel})
+
+Reasoning:
+${reasoning}
+
+Recommended Action:
+${action}
+
+Assessment Time:
+${currentDate}
+
+
+IMPORTANT:
+This is a hackathon/learning prototype.
+The risk score and confidence are demonstration
+heuristics and are NOT medically validated.
+This report must not replace assessment by a
+qualified healthcare professional.`;
+
+
+            document
+                .getElementById("referralText")
+                .textContent =
+                referral;
+
+
+            /* =====================================
+               SAVE HISTORY
+            ===================================== */
+
+            const history =
+                JSON.parse(
+                    localStorage.getItem(
+                        "vedaPatientHistory"
+                    )
+                ) || [];
+
+
+            history.unshift({
+
+                name:
+                    patientName,
+
+                age:
+                    age,
+
+                gender:
+                    gender,
+
+                triage:
+                    triageLevel,
+
+                risk:
+                    riskScore,
+
+                confidence:
+                    confidenceScore,
+
+                date:
+                    currentDate
+
+            });
+
+
+            localStorage.setItem(
+                "vedaPatientHistory",
+                JSON.stringify(history)
+            );
+
+
+            updateDashboard();
+
+            displayHistory();
+
+
+            resultSection.scrollIntoView({
+
+                behavior:
+                    "smooth",
+
+                block:
+                    "start"
+
+            });
+
+        }
+
+
+        /* =========================================
+           DEMO PATIENT
+        ========================================= */
+
+        function loadDemoPatient() {
+
+            document
+                .getElementById("patientName")
+                .value =
+                "Demo Patient";
+
+
+            document
+                .getElementById("age")
+                .value =
+                "42";
+
+
+            document
+                .getElementById("gender")
+                .value =
+                "Female";
+
+
+            document
+                .getElementById("temperature")
+                .value =
+                "38.4";
+
+
+            document
+                .getElementById("heartRate")
+                .value =
+                "124";
+
+
+            document
+                .querySelectorAll(
+                    '.symptom-item input'
+                )
+                .forEach(
+                    checkbox =>
+                        checkbox.checked = false
+                );
+
+
+            document
+                .getElementById("fever")
+                .checked =
+                true;
+
+
+            document
+                .getElementById("cough")
+                .checked =
+                true;
+
+
+            document
+                .getElementById("weakness")
+                .checked =
+                true;
+
+
+            document
+                .getElementById("moderate")
+                .checked =
+                true;
+
+        }
+
+
+        /* =========================================
+           CLEAR FORM
+        ========================================= */
+
+        function clearForm() {
+
+            document
+                .getElementById("patientName")
+                .value =
+                "";
+
+
+            document
+                .getElementById("age")
+                .value =
+                "";
+
+
+            document
+                .getElementById("gender")
+                .value =
+                "";
+
+
+            document
+                .getElementById("temperature")
+                .value =
+                "";
+
+
+            document
+                .getElementById("heartRate")
+                .value =
+                "";
+
+
+            document
+                .querySelectorAll(
+                    '.symptom-item input'
+                )
+                .forEach(
+                    checkbox =>
+                        checkbox.checked = false
+                );
+
+
+            document
+                .getElementById("mild")
+                .checked =
+                true;
+
+
+            document
+                .getElementById("resultSection")
+                .style.display =
+                "none";
+
+        }
+
+
+        /* =========================================
+           DASHBOARD
+        ========================================= */
+
+        function getHistory() {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "vedaPatientHistory"
+                )
+            ) || [];
+
+        }
+
+
+        function updateDashboard() {
+
+            const history =
+                getHistory();
+
+
+            const red =
+                history.filter(
+                    item =>
+                        item.triage === "RED"
+                ).length;
+
+
+            const yellow =
+                history.filter(
+                    item =>
+                        item.triage === "YELLOW"
+                ).length;
+
+
+            const green =
+                history.filter(
+                    item =>
+                        item.triage === "GREEN"
+                ).length;
+
+
+            document
+                .getElementById("totalPatients")
+                .textContent =
+                history.length;
+
+
+            document
+                .getElementById("redPatients")
+                .textContent =
+                red;
+
+
+            document
+                .getElementById("yellowPatients")
+                .textContent =
+                yellow;
+
+
+            document
+                .getElementById("greenPatients")
+                .textContent =
+                green;
+
+        }
+
+
+        /* =========================================
+           HISTORY
+        ========================================= */
+
+        function displayHistory() {
+
+            const history =
+                getHistory();
+
+
+            const search =
+                document
+                .getElementById("historySearch")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+            const filter =
+                document
+                .getElementById("historyFilter")
+                .value;
+
+
+            const filtered =
+                history.filter(
+                    item => {
+
+                        const matchesSearch =
+                            item.name
+                            .toLowerCase()
+                            .includes(search);
+
+
+                        const matchesFilter =
+                            filter === "ALL"
+                            ||
+                            item.triage === filter;
+
+
+                        return (
+                            matchesSearch
+                            &&
+                            matchesFilter
+                        );
+
+                    }
+                );
+
+
+            const body =
+                document
+                .getElementById("historyBody");
+
+
+            if (filtered.length === 0) {
+
+                body.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="empty-history"
+                        >
+
+                            No patient records found.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+            }
+
+
+            body.innerHTML =
+                filtered
+                .map(
+                    item => {
+
+                        let badgeClass =
+                            "badge-green";
+
+
+                        if (
+                            item.triage === "RED"
+                        ) {
+
+                            badgeClass =
+                                "badge-red";
+
+                        }
+
+                        else if (
+                            item.triage === "YELLOW"
+                        ) {
+
+                            badgeClass =
+                                "badge-yellow";
+
+                        }
+
+
+                        return `
+
+                            <tr>
+
+                                <td>
+                                    ${escapeHTML(item.name)}
+                                </td>
+
+                                <td>
+                                    ${item.age}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(item.gender)}
+                                </td>
+
+                                <td>
+
+                                    <span
+                                        class="table-badge ${badgeClass}"
+                                    >
+
+                                        ${item.triage}
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    ${item.risk}/100
+                                </td>
+
+                                <td>
+                                    ${item.confidence}%
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(item.date)}
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+        }
+
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =========================================
+           CLEAR HISTORY
+        ========================================= */
+
+        function clearHistory() {
+
+            const history =
+                getHistory();
+
+
+            if (history.length === 0) {
+
+                alert(
+                    "There is no history to clear."
+                );
+
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to clear all patient history?"
+                );
+
+
+            if (!confirmed) {
+
+                return;
+            }
+
+
+            localStorage.removeItem(
+                "vedaPatientHistory"
+            );
+
+
+            updateDashboard();
+
+            displayHistory();
+
+        }
+
+
+        /* =========================================
+           COPY REFERRAL
+        ========================================= */
+
+        function copyReferral() {
+
+            const text =
+                document
+                .getElementById("referralText")
+                .textContent;
+
+
+            navigator
+                .clipboard
+                .writeText(text)
+                .then(
+                    function() {
+
+                        alert(
+                            "Referral note copied!"
+                        );
+
+                    }
+                )
+                .catch(
+                    function() {
+
+                        alert(
+                            "Unable to copy automatically. Please select and copy the text."
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================
+           PAGE LOAD
+        ========================================= */
+
+        window.addEventListener(
+            "load",
+            function() {
+
+                const savedWorker =
+                    localStorage.getItem(
+                        "vedaWorkerName"
+                    );
+
+
+                if (savedWorker) {
+
+                    showApp();
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           SERVICE WORKER
+        ========================================= */
+
+        if (
+            "serviceWorker" in navigator
+        ) {
+
+            window.addEventListener(
+                "load",
+                function() {
+
+                    navigator
+                        .serviceWorker
+                        .register(
+                            "./service-worker.js"
+                        )
+                        .then(
+                            function() {
+
+                                console.log(
+                                    "Veda Sahayak offline support enabled."
+                                );
+
+                            }
+                        )
+                        .catch(
+                            function(error) {
+
+                                console.log(
+                                    "Service worker registration failed:",
+                                    error
+                                );
+
+                            }
+                        );
+
+                }
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
